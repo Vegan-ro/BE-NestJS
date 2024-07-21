@@ -6,6 +6,8 @@ import { ResponseFormat } from 'src/global/response.format';
 import { Roles } from '../auth/roles.decorator';
 import { RoleGuard } from '../auth/role.guard';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { CreateUserDto } from './dto/create.user.dto';
+import { LoginUserDto } from './dto/login.user.dto';
 
 @Controller()
 export class UserController {
@@ -21,15 +23,15 @@ export class UserController {
 
 // 회원가입
   @Post('signup')
-  async signUp(@Body() body: any) {
-    const { email, password } = body;
+  async signUp(@Body() createUserDto: CreateUserDto) {
+    const { email, password } = createUserDto;
     const newUser = await this.userService.signUp(email, password);
     return new ResponseFormat(newUser);
   }
 // 로그인
   @Post('login')
-  async signIn(@Body() body: any) {
-    const { email, password } = body;
+  async signIn(@Body() loginUserDto: LoginUserDto) {
+    const { email, password } = loginUserDto;
     const token = await this.userService.signIn(email, password);
     return new ResponseFormat({ token: `Bearer ${token}` });
   }

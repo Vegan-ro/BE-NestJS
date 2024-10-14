@@ -47,13 +47,13 @@ export class ReportedPlaceService {
     pageSize: number,
     user_id?: string,
   ) {
-    const reportedPlaces =
+    const { reportedPlaces, totalCount } =
       await this.reportedPlaceRepository.findReportedPlaces(
         pageNumber,
         pageSize,
         user_id,
       );
-    return reportedPlaces;
+    return { reportedPlaces, totalCount };
   }
 
   // 특정 id를 가진 장소 내용 수정

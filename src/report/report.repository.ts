@@ -26,12 +26,14 @@ export class ReportedPlaceRepository {
     await newReportedPlace.save();
     return newReportedPlace.toObject();
   }
+
   // id로 제보된 장소 찾기
   async findReportedPlaceById(id: string) {
     return await this.ReportedPlaceModel.findById(id)
       .populate('category_img')
       .lean();
   }
+
   // 조건을 만족하는 제보된 장소 모두 찾기
   async findReportedPlaces(
     pageNumber: number,
@@ -62,8 +64,12 @@ export class ReportedPlaceRepository {
         .limit(pageSize)
         .exec();
     }
-    return reportedPlaces;
+
+    // 조건에 맞는 데이터의 총 개수(페이지네이션X)
+    const totalCount = await this.ReportedPlaceModel.countDocuments(query);
+    return { reportedPlaces, totalCount };
   }
+
   // 특정 id를 가진 제보 장소 내용 덮어씌우기
   async updateReportedPlace(
     id: string,

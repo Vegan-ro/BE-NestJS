@@ -7,7 +7,6 @@ import {
   IsArray,
   ArrayMinSize,
   ArrayMaxSize,
-  ValidateNested,
   IsNumber,
   Min,
   Max,
@@ -49,14 +48,7 @@ export class CreateReportedPlaceDto {
   address_detail: string = '';
 
   @IsArray()
-  @ArrayMinSize(2)
-  @ArrayMaxSize(2)
-  @ValidateNested({ each: true })
   @IsNumber({}, { each: true })
-  @Min(-180, { each: true, message: 'longitude must be at least -90.' }) // Min longitude
-  @Max(180, { each: true, message: 'longitude must not exceed 90.' }) // Max longitude
-  @Min(-90, { each: true, message: 'Latitude must be at least -90.' }) // Min latitude
-  @Max(90, { each: true, message: 'Latitude must not exceed 90.' }) // Max latitude
   @IsNotEmpty()
   location: number[];
 

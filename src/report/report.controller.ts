@@ -58,12 +58,13 @@ export class ReportedPlaceController {
     @Query('pageSize') pageSize: number,
   ): Promise<ResponseFormat> {
     const user_id = req.user.userId;
-    const reportedPlaces = await this.reportedPlaceService.getReportedPlaces(
-      pageNumber,
-      pageSize,
-      user_id,
-    );
-    return new ResponseFormat(reportedPlaces);
+    const { reportedPlaces, totalCount } =
+      await this.reportedPlaceService.getReportedPlaces(
+        pageNumber,
+        pageSize,
+        user_id,
+      );
+    return new ResponseFormat({ reportedPlaces, totalCount });
   }
 
   // 새로운 장소 제보 POST

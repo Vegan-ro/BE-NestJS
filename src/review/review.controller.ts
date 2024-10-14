@@ -16,6 +16,7 @@ import { CreateReviewDto } from './dto/create.review.dto';
 import { Roles } from 'src/auth/roles.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role.guard';
+import { PatchReviewDto } from './dto/patch.review.dto';
 
 @Controller()
 export class ReviewController {
@@ -27,7 +28,7 @@ export class ReviewController {
     pageSize?: number,
     userId?: string,
     placeId?: string,
-  ) {
+  ): Promise<ResponseFormat> {
     const { reviews, totalCount } = await this.reviewService.getReviews(
       pageNumber,
       pageSize,
@@ -111,11 +112,11 @@ export class ReviewController {
   @UseGuards(AuthGuard, RoleGuard)
   async updateReview(
     @Param('reviewId') reviewId: string,
-    @Body('content') content: string,
+    @Body() patchReviewDto: PatchReviewDto,
   ): Promise<ResponseFormat> {
     const updatedReview = await this.reviewService.updateReview(
       reviewId,
-      content,
+      patchReviewDto,
     );
     return new ResponseFormat(updatedReview);
   }

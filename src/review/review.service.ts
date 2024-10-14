@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ReviewRepository } from './review.repository';
 import { PlaceRepository } from 'src/place/place.repository';
 import { CreateReviewDto } from './dto/create.review.dto';
+import { PatchReviewDto } from './dto/patch.review.dto';
 
 @Injectable()
 export class ReviewService {
@@ -13,7 +14,7 @@ export class ReviewService {
   // 새로운 리뷰 등록
   async createReview(createReviewDto: CreateReviewDto, user_id: string) {
     const existingPlace = await this.placeRepository.findPlaceById(
-      createReviewDto.placeId,
+      createReviewDto.place_id,
     );
     if (!existingPlace) {
       throw new BadRequestException('해당 id를 갖는 장소가 없습니다.');
@@ -49,8 +50,11 @@ export class ReviewService {
   }
 
   // 특정 id를 가진 리뷰 내용 수정
-  async updateReview(id: string, content: string) {
-    const updatedReview = await this.reviewRepository.updateReview(id, content);
+  async updateReview(id: string, patchReviewDto: PatchReviewDto) {
+    const updatedReview = await this.reviewRepository.updateReview(
+      id,
+      patchReviewDto,
+    );
     if (updatedReview === null) {
       throw new BadRequestException('해당 id를 갖는 리뷰가 없습니다.');
     }

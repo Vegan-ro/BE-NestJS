@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ReviewModule } from './review.module';
 import { CreateReviewDto } from './dto/create.review.dto';
+import { PatchReviewDto } from './dto/patch.review.dto';
 
 @Injectable()
 export class ReviewRepository {
@@ -14,7 +15,7 @@ export class ReviewRepository {
   // 새로운 리뷰 추가
   async createReview(createReviewDto: CreateReviewDto, user_id: string) {
     const newReview = new this.ReviewModel({
-      createReviewDto,
+      ...createReviewDto,
       user_id,
     });
     await newReview.save();
@@ -84,12 +85,10 @@ export class ReviewRepository {
   }
 
   // 특정 id를 가진 리뷰 내용 덮어씌우기
-  async updateReview(id: string, content: string) {
+  async updateReview(id: string, patchReviewDto: PatchReviewDto) {
     const updatedReview = await this.ReviewModel.findByIdAndUpdate(
       id,
-      {
-        content,
-      },
+      patchReviewDto,
       { new: true },
     ).lean();
     return updatedReview;

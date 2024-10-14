@@ -1,10 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class CreateReviewDto {
-  @IsString()
-  @IsNotEmpty()
-  place_id: string;
-
+export class PatchReviewDto {
   @IsString()
   @IsNotEmpty()
   content: string;
